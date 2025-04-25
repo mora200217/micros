@@ -16,6 +16,7 @@
     
 ;Versión 2
 ; Verision 3 
+    ; asdasd
     
 ;===============================================================
 ; 0. Configuración de archivo     
