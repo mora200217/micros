@@ -37,22 +37,16 @@
 
 ;===============================================================
 ; 2. Código principal 
-;===============================================================     
+;=============================================================== 
+
+PSECT resetVector, class=CODE, reloc=2
+    GOTO    ex_1
     
-    ORG     0x0000
-    GOTO    rst
-    
-    PSECT code, class=CODE, reloc=2
+PSECT code, class=CODE, reloc=2
 
  ; Para fines de organización, cada etiqueta representará un 
  ; ejercicio. Se nombrará ex_<i> 
     
-    rst: 
-	clrf	aux1
-	clrf	aux2
-	clrf	aux3
-	clrf	aux4
-	
     ex_1:			
         movlw	    0x07
 	movwf	    aux1
@@ -72,17 +66,17 @@
     ex_3: 
 	movlw	    0x05
 	movwf	    aux1
-	movf	    aux1, w	; cargo a WREG
+	movf	      aux1, w	; cargo a WREG
 	sublw	    0x09
 	
-	movwf	    0x00
+	movwf	    aux3
 	;sublw	    0x07
 	
     ex_4: 
 	
 	
     loop: 
-        goto    $              ; Bucle infinito
+        goto    ex_1              ; Bucle infinito
 	
 
 ;===============================================================
