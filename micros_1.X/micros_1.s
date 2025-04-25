@@ -57,7 +57,7 @@
  
     ex_2: 
 	movlw	    0x08
-	movwf	    aux1
+	movwf	    aux1 ; Condiocion que dice robin
 	
 	movlw	    0x0A
 	movwf	    aux2
