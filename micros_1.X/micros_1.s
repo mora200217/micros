@@ -221,33 +221,26 @@ ex_15:
 
 
 ex_16:
-    movlw   0x12
+    movlw   0x12;18
     movwf   aux1
 
-    movlw   0x3C
+    movlw   0x3C;60
     movwf   aux2
 
-    movlw   0x10
+    movlw   0x10;16
     movwf   aux3
 
     movf    aux1, w
     addwf   aux2                   ; aux2 + aux1 -> aux2
 
-    movf    aux3, w
-    sublw   0b11010                ; 26 - aux3 -> W
+    movlw   0b11010
+    
+    subwf   aux3,0                ; 26 - aux3 -> W
     mullw   0x03                   ; *3 -> PRODL
 
-    movf    PRODL, w
-    addwf   aux2, w
+    movf    PRODH, w
+    subwf   aux2, w
     movwf   aux4
-
-    movf    aux1, w
-    iorwf   aux2, 0
-    movwf   aux4
-
-    movf    aux3, w
-    xorlw   0xD0
-    andwf   aux4, 1
     
     call    clean
 
