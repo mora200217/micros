@@ -106,6 +106,8 @@ ex_6:
     mulwf   aux2
     movf    PRODL, w
     movwf   aux2
+    
+    call    clean
 
 
 ex_7:
@@ -113,6 +115,7 @@ ex_7:
     movwf   aux1
 
     comf    aux1, 0
+    call    clean
 
 
 ex_8:
@@ -120,7 +123,7 @@ ex_8:
     movwf   aux1
 
     negf    aux1                   ; -aux1 + 1 -> aux1
-
+    call    clean
 
 ex_9:
     movlw   35
@@ -128,7 +131,8 @@ ex_9:
 
     movlw   7
     iorwf   aux1, 0
-
+    
+    call    clean
 
 ex_10:
     movlw   0x14                   ; 20
@@ -139,6 +143,8 @@ ex_10:
 
     movf    aux1, w
     iorwf   aux2, w
+    
+    call    clean
 
 
 ex_11:
@@ -147,6 +153,8 @@ ex_11:
 
     movlw   15
     andwf   aux1, 0
+    
+    call    clean
 
 
 ex_12:
@@ -158,6 +166,8 @@ ex_12:
 
     movf    aux1, w
     andwf   aux2, w
+    
+    call    clean
 
 
 ex_13:
@@ -166,6 +176,8 @@ ex_13:
 
     movlw   1
     xorwf   aux1, 0
+    
+    call    clean
 
 
 ex_14:
@@ -177,6 +189,8 @@ ex_14:
 
     movf    aux1, w
     xorwf   aux2, w
+    
+    call    clean
 
 
 ex_15:
@@ -197,6 +211,8 @@ ex_15:
 
     movf    aux1, w
     subwf   aux2                   ; aux2 - aux1 -> aux2
+    
+    call    clean
 
 
 ex_16:
@@ -227,6 +243,8 @@ ex_16:
     movf    aux3, w
     xorlw   0xD0
     andwf   aux4, 1
+    
+    call    clean
 
 
 loop:
