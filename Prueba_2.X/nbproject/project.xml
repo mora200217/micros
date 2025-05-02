@@ -3,14 +3,14 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>micros_2</name>
-            <creation-uuid>46becea1-2607-457a-9056-0f6a3dc7b311</creation-uuid>
+            <name>Prueba_2</name>
+            <creation-uuid>3aac50e0-ddb2-4dac-b476-32580fa07882</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions/>
             <cpp-extensions/>
             <header-extensions/>
             <asminc-extensions/>
-            <sourceEncoding>ISO-8859-1</sourceEncoding>
+            <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList/>
             <confList>
