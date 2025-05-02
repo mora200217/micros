@@ -132,9 +132,9 @@ ex_8:
 ex_9:
     movlw   35
     movwf   aux1
-
-    movlw   7
-    iorwf   aux1, 0
+    
+    movf    aux1, w
+    iorlw   7
     
     call    clean
 
@@ -154,9 +154,9 @@ ex_10:
 ex_11:
     movlw   62
     movwf   aux1
-
-    movlw   15
-    andwf   aux1, 0
+    
+    movf    aux1, w
+    andlw   15
     
     call    clean
 
@@ -177,9 +177,9 @@ ex_12:
 ex_13:
     movlw   120
     movwf   aux1
-
-    movlw   1
-    xorwf   aux1, 0
+    
+    movwf   aux1, w
+    xorlw   1
     
     call    clean
 
