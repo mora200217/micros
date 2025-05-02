@@ -84,6 +84,8 @@ ex_4:
 
     movf    aux1, w
     subwf   aux2                   ; aux2 - W(aux1) -> aux2
+    
+    call    clean
 
 
 ex_5:
@@ -91,15 +93,17 @@ ex_5:
     movwf   aux1
 
     movlw   0x05
-    mulwf   aux1, 1
+    mulwf   aux1
     movf    PRODL, w               ; Resultado -> W
+    
+    call    clean
 
 
 ex_6:
-    movlw   0x0C
+    movlw   0x0C ;12
     movwf   aux1
 
-    movlw   0x0F
+    movlw   0x0F ;15
     movwf   aux2
 
     movf    aux1, w
@@ -111,7 +115,7 @@ ex_6:
 
 
 ex_7:
-    movlw   0x0C
+    movlw   0x0C ;12
     movwf   aux1
 
     comf    aux1, 0
@@ -119,10 +123,10 @@ ex_7:
 
 
 ex_8:
-    movlw   0x0C
+    movlw   0x0C ;12
     movwf   aux1
 
-    negf    aux1                   ; -aux1 + 1 -> aux1
+    negf    aux1,1                  ; -aux1 + 1 -> aux1
     call    clean
 
 ex_9:
@@ -135,14 +139,14 @@ ex_9:
     call    clean
 
 ex_10:
-    movlw   0x14                   ; 20
+    movlw   0x14; 20
     movwf   aux1
 
-    movlw   0x38                   ; 56
+    movlw   0x38; 56
     movwf   aux2
 
     movf    aux1, w
-    iorwf   aux2, w
+    iorwf   aux2, 0
     
     call    clean
 
@@ -158,14 +162,14 @@ ex_11:
 
 
 ex_12:
-    movlw   0x64                   ; 100
+    movlw   0x64; 100
     movwf   aux1
 
-    movlw   0x2D                   ; 45
+    movlw   0x2D; 45
     movwf   aux2
 
     movf    aux1, w
-    andwf   aux2, w
+    andwf   aux2, 0
     
     call    clean
 
@@ -181,14 +185,14 @@ ex_13:
 
 
 ex_14:
-    movlw   0x11
+    movlw   0x11;17
     movwf   aux1
 
-    movlw   0x5A
+    movlw   0x5A;90
     movwf   aux2
 
     movf    aux1, w
-    xorwf   aux2, w
+    xorwf   aux2, 0
     
     call    clean
 
@@ -256,6 +260,8 @@ clean:
     clrf    aux2
     clrf    aux3
     clrf    aux4
+    clrf    PRODL
+    clrf    WREG
     return
 
 
