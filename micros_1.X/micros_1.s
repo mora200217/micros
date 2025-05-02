@@ -30,6 +30,7 @@
     aux3    EQU     0x03          ; Variable temporal 3
     aux4    EQU     0x04          ; Variable temporal 4
     
+    
 
 ;===============================================================
 ; 2. Código principal 
@@ -47,6 +48,9 @@ PSECT code, class=CODE, reloc=2
 	
 	movlw	    0x03
 	addwf	    aux1
+	
+	call clean 
+	
  
     ex_2: 
 	movlw	    0x08
@@ -58,11 +62,15 @@ PSECT code, class=CODE, reloc=2
 	movf	    aux1, w	; Movemos a WREG para operar 
 	addwf	    aux2, w
 	
+	call clean 
+	
     ex_3: 
 	movlw	    0x05
 	movwf	    aux1
 	movf	    aux1, w	; cargo a WREG
 	sublw	    0x09
+	
+	call clean 
 	
 	;sublw	    0x07
 	
@@ -124,24 +132,17 @@ PSECT code, class=CODE, reloc=2
 	xorlw	    0xD0	; Que quede en WREG
 	
 	andwf	    aux4,   1
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
-    
-	
-	
+
     loop: 
         goto    ex_1              ; Bucle infinito
+	
+    clean:
+	clrf	aux1
+	clrf	aux2
+	clrf	aux3
+	clrf	aux4
+	
+	return 
 	
 
 ;===============================================================
