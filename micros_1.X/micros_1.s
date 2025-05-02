@@ -23,7 +23,7 @@
 ;===========================================================================
 
     processor   18F4550              ; Definir el PIC a utilizar
-    #include    <xc.inc>            ; Incluir definiciones del compilador pic-as
+    #include    <xc.inc>             ; Incluir definiciones del compilador pic-as
 
 ;===========================================================================
 ; 1. Declaración de variables 
@@ -178,7 +178,7 @@ ex_13:
     movlw   120
     movwf   aux1
     
-    movwf   aux1, w
+    movf   aux1,w
     xorlw   1
     
     call    clean
@@ -238,7 +238,7 @@ ex_16:
     subwf   aux3,0                ; 26 - aux3 -> W
     mullw   0x03                   ; *3 -> PRODL
 
-    movf    PRODH, w
+    movf    PRODL, w
     subwf   aux2, w
     movwf   aux4
     
