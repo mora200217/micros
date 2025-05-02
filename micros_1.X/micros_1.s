@@ -14,10 +14,6 @@
 ; 1.0      2025-04-24  A. Morales, O. Guzmán  Versión inicial.
 ;===============================================================
     
-;Versión 2
-;Verision 3 
-;:b
-    
 ;===============================================================
 ; 0. Configuración de archivo     
 ;===============================================================
@@ -39,18 +35,17 @@
 ; 2. Código principal 
 ;=============================================================== 
 
-PSECT resetVector, class=CODE, reloc=2
-    GOTO    ex_1
-    
 PSECT code, class=CODE, reloc=2
 
  ; Para fines de organización, cada etiqueta representará un 
  ; ejercicio. Se nombrará ex_<i> 
     
-    ex_1:			
+    ex_1:		
+	;  Sumar 3 a la variable aux1 cargada previamente con el valor de 7.
         movlw	    0x07
-	movwf	    aux1
-	movlw	    0x02
+	movwf	    aux1 ; Cargar la variable
+	
+	movlw	    0x03
 	addwf	    aux1
  
     ex_2: 
@@ -66,13 +61,83 @@ PSECT code, class=CODE, reloc=2
     ex_3: 
 	movlw	    0x05
 	movwf	    aux1
-	movf	      aux1, w	; cargo a WREG
+	movf	    aux1, w	; cargo a WREG
 	sublw	    0x09
 	
-	movwf	    aux3
 	;sublw	    0x07
 	
     ex_4: 
+    
+    ex_5: 
+	movlw	    4
+	movwf	    aux1 ; Asignacion de valor 
+	
+	movlw	    5
+	mulwf	    aux1, 1
+	movf	    PRODL, w		; No se necesita el bloque superior 
+	
+    
+    ex_7: 
+	movlw	    12 
+	movwf	    aux1 
+	
+	comf	    aux1,   0
+	
+    ex_9:
+	movlw	35
+	movwf	aux1 
+	
+	movlw	7
+	
+	iorwf	aux1, 0
+	
+    ex_11:
+	movlw	    62; 
+	movwf	    aux1
+	
+	movlw	    15
+	andwf	    aux1, 0
+	
+    ex_13:
+	movlw	    120
+	movwf	    aux1
+	
+	movlw	    1
+	xorwf	    aux1, 0
+	
+    ex_15:
+	movlw	    25;
+	movwf	    aux1
+	
+	movlw	    40;
+	movwf	    aux2
+	
+	movlw	    103;
+	movwf	    aux3
+	
+	
+	movf	    aux1, w
+	iorwf	    aux2, 0 ; quede en WREG
+	movwf	    aux4	; Reusltado parcial 
+	
+	movf	    aux3,   w
+	xorlw	    0xD0	; Que quede en WREG
+	
+	andwf	    aux4,   1
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    
+    
 	
 	
     loop: 
