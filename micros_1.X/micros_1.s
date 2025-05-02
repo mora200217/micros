@@ -207,14 +207,15 @@ ex_15:
     movlw   103
     movwf   aux3
 
-    movlw   0x06
-    movwf   aux1
-
-    movlw   0x04
-    movwf   aux2
-
     movf    aux1, w
-    subwf   aux2                   ; aux2 - aux1 -> aux2
+    iorwf   aux2, 0
+    movwf    aux4
+    
+    movf    aux3, w
+    iorlw   0xD0
+    andwf   aux4, 1
+    
+    ; aux2 - aux1 -> aux2
     
     call    clean
 
