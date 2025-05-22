@@ -35,10 +35,20 @@ PSECT code, class=CODE, reloc = 2
  
 inicio:
     bcf TRISD,0
+    bcf TRISD,1
+    bcf TRISD,2  
 Menu:
     bsf LATD,0
     call Retardo
     bcf LATD,0
+    call Retardo
+    bsf LATD,1
+    call Retardo
+    bcf LATD,1
+    call Retardo
+    bsf LATD,2
+    call Retardo
+    bcf LATD,2
     call Retardo
     goto Menu
 Retardo:
