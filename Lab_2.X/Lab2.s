@@ -28,6 +28,9 @@ CONFIG FOSC=INTOSC_EC
 CONFIG WDT=OFF
 
 aux1 equ 0x00
+aux2 equ 0x01
+aux3 equ 0x02
+ 
 PSECT code, class=CODE, reloc = 2
  
 inicio:
@@ -39,20 +42,20 @@ Menu:
     call Retardo
     goto Menu
 Retardo:
-	movlw .50
+	movlw 50
 	movwf aux1
-	movlw .62
+	movlw 62
 	movwf aux2
-	movlw .26
+	movlw 26
 	movwf aux3
 AuxRetardo:
 	decfsz aux1,f
 	goto AuxRetardo
-	movlw .50
+	movlw 50
 	movwf aux1
 	decfsz aux2,f
 	goto AuxRetardo
-	movlw .62
+	movlw 62
 	movwf aux2
 	decfsz aux3,f
 	goto AuxRetardo
