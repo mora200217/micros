@@ -38,11 +38,16 @@ inicio:
     bcf TRISD,1
     bcf TRISD,2  
 Menu:
-    bsf LATD,0
     call Retardo
-    bcf LATD,0
+    bsf LATD,2
     call Retardo
     bsf LATD,1
+    call Retardo
+    bcf LATD,2
+    call Retardo
+    bSf LATD,0
+    call Retardo
+    bsf LATD,2
     call Retardo
     bcf LATD,1
     call Retardo
@@ -50,6 +55,7 @@ Menu:
     call Retardo
     bcf LATD,2
     call Retardo
+    bcf LATD,0
     goto Menu
 Retardo:
 	movlw 50
