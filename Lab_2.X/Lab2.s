@@ -14,7 +14,8 @@
 ; Version  Date        Author(s)               Description
 ; -------  ----------  ---------------------   ---------------------------------
 ; 1.0      2025-04-24  O. Guzmán               Primer retardo de 1 s
-; 2.0      2025-04-24  O. Guzmán - A. Morales  Código Final
+; 2.0      2025-04-25  O. Guzmán - A. Morales  Código Final
+; 3.0      2025-04-26  O. Guzmán - A. Morales  Bono 
 ;===========================================================================
 
 
