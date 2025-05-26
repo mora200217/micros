@@ -3,7 +3,7 @@
 ; Authors     : Andrés Morales, Oscar Guzmán 
 ; Date        : 2025-20-05
 ; Lab         : 2
-; Version     : 1.0
+; Version     : 2.0
 ; Description : se plantea el desarrollo de cuatro algoritmos, el primero para análisis y los otros para diseño a partir del uso de un led RGB.
 ;               Compilado con pic-as (diferente a mpasm clásico
 ;               de la versión 3.2 de MPLAB X).
@@ -11,9 +11,10 @@
 
 ;===========================================================================
 ; Revision History:
-; Version  Date        Author(s)              Description
-; -------  ----------  ---------------------  ---------------------------------
-; 1.0      2025-04-24  O. Guzmán              Primer retardo de 1 s
+; Version  Date        Author(s)               Description
+; -------  ----------  ---------------------   ---------------------------------
+; 1.0      2025-04-24  O. Guzmán               Primer retardo de 1 s
+; 2.0      2025-04-24  O. Guzmán - A. Morales  Código Final
 ;===========================================================================
 
 
@@ -34,46 +35,34 @@ aux3 equ 0x02
 PSECT code, class=CODE, reloc = 2
  
 inicio:
-    bcf TRISD,0
-    bcf TRISD,1 
-    bcf TRISD,2  
+    bcf TRISD,0	;Inicializar el pin 0 del puerto D como salida
+    bcf TRISD,1	;Inicializar el pin 1 del puerto D como salida
+    bcf TRISD,2	;Inicializar el pin 2 del puerto D como salida
+    
 Menu:
-    bsf LATD,2
+    ;Color azul
+    bsf LATD,2 ;Energizar salida; poner en 1 la salida del pin 2 del puerto D (color azul) 
     
-    bsf LATD,1
+    ;Color cyan
+    bsf LATD,1 ;Energizar salida; poner en 1 la salida del pin 1 del puerto D (color verde) 
     
-    bcf LATD,2
+    ;Color verde
+    bcf LATD,2 ;Desenergizar salida; poner en 0 la salida del pin 2 del puerto D (color azul) 
     
-    bsf LATD,0
+    ;Color Amarillo
+    bsf LATD,0 ;Energizar salida; poner en 1 la salida del pin 0 del puerto D (color rojo) 
     
-    bsf LATD,2
+    ;Color Blanco
+    bsf LATD,2 ;Energizar salida; poner en 1 la salida del pin 2 del puerto D (color azul) 
     
-    bcf LATD,1
+    ;Color Magenta
+    bcf LATD,1 ;Desenergizar salida; poner en 0 la salida del pin 1 del puerto D (color verde) 
     
-    bsf LATD,2
+    ;Color Rojo
+    bcf LATD,2 ;Desenergizar salida; poner en 0 la salida del pin 2 del puerto D (color azu) 
     
-    bcf LATD,2
-    
-    bcf LATD,0
+    ;Color Negro
+    bcf LATD,0 ;Desenergizar salida; poner en 0 la salida del pin 0 del puerto D (color rojo) 
     
     BRA Menu
-Retardo:
-	movlw 50
-	movwf aux1
-	movlw 62
-	movwf aux2
-	movlw 26
-	movwf aux3
-AuxRetardo:
-	decfsz aux1,f
-	goto AuxRetardo
-	movlw 50
-	movwf aux1
-	decfsz aux2,f
-	goto AuxRetardo
-	movlw 62
-	movwf aux2
-	decfsz aux3,f
-	goto AuxRetardo
-	return
 end
