@@ -66,7 +66,6 @@ inicio:
 main:
     movlw   10
     ; Reflejar el valor de TMR0 en LATB (decodificador)
-    movwf TMR0
     movff TMR0, LATB ; TMR0 -> LATB
 
     ; Si TMR0 < WREG (2), llamar a resetCounter
