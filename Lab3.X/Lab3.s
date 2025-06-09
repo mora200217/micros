@@ -67,7 +67,7 @@ main:
     movlw   10
     ; Reflejar el valor de TMR0 en LATB (decodificador)
     movwf TMR0
-    movff   TMR0, LATB ; TMR0 -> LATB
+    movff TMR0, LATB ; TMR0 -> LATB
 
     ; Si TMR0 < WREG (2), llamar a resetCounter
     cpfslt  TMR0    ; Si TMR0 < WREG no ejecuta a call resetCounter (Skip if (f) < (W) )
