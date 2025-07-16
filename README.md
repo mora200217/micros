@@ -1,6 +1,6 @@
 # Laboratorios de micros 
 
 
-### autores
+### Autores
 - Andrés Morales
-- Oscar Guzman
+- Óscar Guzmán
