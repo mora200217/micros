@@ -401,7 +401,8 @@ void PARADA(void){
     BorraLCD();                        // Borra la pantalla 
     printf(" PARADA DE ");             // Imprime la primer parte del mensaje de emergencia la primer parte
     DireccionaLCD(16);                 // Posiciona el cursor a inicios de la segunda línea
-    printf("    EMERGENCIA");           // Imprime la segunda parte del mensaje de emergencia la primer parte
+    printf("    EMERGENCIA");          // Imprime la segunda parte del mensaje de emergencia la primer parte
+    LATE = (LATE & 0xF0) | 0b100 ;
     while(1);
 }
 

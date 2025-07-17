@@ -134,7 +134,7 @@ void main(void){
     
     AnimacionBienvenida();
    
-    __delay_ms(20000);       //Se debe cambiar a 5s, se pone 1s para las simulaciones del funcionamiento del código 
+    __delay_ms(20);       //Se debe cambiar a 5s, se pone 1s para las simulaciones del funcionamiento del código 
     while(1){
         conteoPiezas();
     }
@@ -266,7 +266,7 @@ void __interrupt() ISR(void){        // Bandera de interrupción
         if (inactividad == 20) {
             BorraLCD();
             printf("SUSPENDIDO...");
-            __delay_ms(1000);
+            MostrarCaracterPersonalizado(4);
             Sleep(); // Entra en suspensión
             
         }
@@ -342,7 +342,7 @@ void AnimacionBienvenida(void) {
         DireccionaLCD(posicion);
         MostrarCaracterPersonalizado(frame);
         
-        __delay_ms(400);
+        __delay_ms(200);
     }
     
     // Fase 2: ¡Aparece el monstruo!
@@ -372,10 +372,12 @@ void AnimacionBienvenida(void) {
     DireccionaLCD(16);
     printf("  Skull defeated!");
     
-    __delay_ms(2000);
+    __delay_ms(1000);
     
-    //MostrarCursor();
+    
     BorraLCD();
     DireccionaLCD(0);
     printf("  ¡Bienvenido!");
+    __delay_ms(1000);
+    MostrarCursor();
 }
