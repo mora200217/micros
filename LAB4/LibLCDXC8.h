@@ -47,6 +47,17 @@ extern "C" {
 #define E LATA5	//pueden cambiar 
 #endif
 
+// Comando para OCULTAR el cursor
+#define CURSOR_OFF 0x0C    // Display ON, Cursor OFF, Blink OFF
+
+// Comando para MOSTRAR el cursor  
+#define CURSOR_ON  0x0F    // Display ON, Cursor ON, Blink ON
+
+// Comando para cursor sin parpadeo
+#define CURSOR_NO_BLINK 0x0E  // Display ON, Cursor ON, Blink OFF
+
+
+
 unsigned char LeerTeclado(void);
 
 unsigned char interfaz=8;
@@ -93,6 +104,11 @@ void ReiniciarCuenta(unsigned char *piezasContadas, unsigned char *totalPiezas);
 void finConteo(unsigned char *piezasContadas, unsigned char *totalPiezas);
 
 void Buzzer(void);
+
+void OcultarCursor(void);
+void MostrarCursor(void);
+void CursorSinParpadeo(void);
+
 
 
 void ConfiguraLCD(unsigned char a){
@@ -282,106 +298,103 @@ void MensajeLCD_Var(char* a){
 }
 
 
-    void StartCount(unsigned char totalPiezas, unsigned char *Temp, unsigned char *cursor_pos, unsigned char *inactividad) {
+void StartCount(unsigned char totalPiezas, unsigned char *Temp, unsigned char *cursor_pos, unsigned char *inactividad) {
 
-        unsigned char piezasContadas = 0;         // Iniciar el conteo desde cero
-        unsigned char tec = 0;                    // Instancia de la variable que lee la tecla presionada
-        unsigned char banderaConteo;              // Variable de control antirrebote para RC1
-        unsigned char ultimoBuzzer = 0;           // Variable de control del buzzer
-
-
-        BorraLCD();                               // Se borra toda la pantalla (el cursor se posiciona en 0x80)
-
-        printf("Contadas: 0");                    // Impresión del valor inicial del conteo
-
-        DireccionaLCD(16);                        // Posición en el inicio de la segunda línea
-        printf("Faltan  : %d",totalPiezas);       // Impresión de las piezas a contar 
-
-        while (piezasContadas < totalPiezas) {    // Ciclo de conteo
-
-            banderaConteo = 1;                    // Prepara el comienzo del conteo
-
-            if ( totalPiezas - piezasContadas == 9 ){    // Si solo se está en unidades, que se elimine el 0 restante de la posición de la DDRAM  
-
-                *cursor_pos = 28;                         // Posición para proceder a limpiar la posición de la DDRAM deseada 
-                EraseDigit(Temp, cursor_pos);           // Uso de la función para eliminar dígitos
-
-            }
-
-            while (banderaConteo && RC1){            // Mientras banderaConteo este en 1 y RC1 este presionada
-
-                piezasContadas++;                    // Suma una pieza
-
-                DireccionaLCD(10);                   // Se cambia solo la posición en la DDRAM que muestra el conteo
-                printf("%d", piezasContadas);        // Imprime las piezas contadas
-
-                DireccionaLCD(26);                                 // Posicionamiento del cursor en la segunda línea en la posición que muestra las piezas faltantes de la DDRAM
-                printf("%d", totalPiezas - piezasContadas);        // Imprime las piezas faltantes
-
-                LATD = (LATD & 0xF0) | (piezasContadas % 10);      // Actualiza solo RD0–RD3 con el conteo, preservando RD4–RD7
-
-                while(RC1 == 1) ;                    // Si se mantiene presionado a RC1, no hace nada
-                *inactividad = 0 ;
-                banderaConteo = 0;                   // Después de sumar una pieza se sale del while, esperando a que se presione nuevamente RC1
-            }
-
-            SETUP_RGB(piezasContadas);               // Llamado de la función que determina el color del RGB
-
-            RevisarTeclaESP();                                    // Llamado de la función que revisa si se ha presionado la tecla de STOP o Backlight
-
-            PunteroTeclaESP(&piezasContadas,&totalPiezas);        // Llamado de la función que revisa si se ha presionado la tecla de RESTART o FIN
-
+    unsigned char piezasContadas = 0;         // Iniciar el conteo desde cero
+    unsigned char tec = 0;                    // Instancia de la variable que lee la tecla presionada
+    unsigned char banderaConteo;              // Variable de control antirrebote para RC1
+    unsigned char ultimoBuzzer = 0;           // Variable de control del buzzer
+    
+    BorraLCD();                               // Se borra toda la pantalla (el cursor se posiciona en 0x80)
+    
+    printf("Contadas: 0");                    // Impresión del valor inicial del conteo
+    
+    DireccionaLCD(16);                        // Posición en el inicio de la segunda línea
+    printf("Faltan  : %d",totalPiezas);       // Impresión de las piezas a contar 
+    
+    while (piezasContadas < totalPiezas) {    // Ciclo de conteo
+        
+        banderaConteo = 1;                    // Prepara el comienzo del conteo
+        
+        if ( totalPiezas - piezasContadas == 9 ){    // Si solo se está en unidades, que se elimine el 0 restante de la posición de la DDRAM  
             
-            if ((piezasContadas % 10 == 0) && (piezasContadas != ultimoBuzzer)) {
-                Buzzer();                                         // Suena una vez
-                ultimoBuzzer = piezasContadas;                    // Marca que ya sonó para ese múltiplo
-            }
+            *cursor_pos = 28;                        // Posición para proceder a limpiar la posición de la DDRAM deseada  
+            EraseDigit(Temp, cursor_pos);            // Uso de la función para eliminar dígitos
 
-
-            LATB = 0 ;                                            // Se limpia la entrada para poder seguir obteniendo entradas del teclado
-
-
-            while(RB4 == 0 || RB5 == 0 || RB6 == 0 || RB7 == 0);  //Antirrebote
-                __delay_ms(150);
         }
 
-        BorraLCD();                       // Tras acabar el conteo se limpia la pantalla
-        printf("OBJETIVO LOGRADO");       // Mensaje de logro del conteo
+        while (banderaConteo && RC1){            // Mientras banderaConteo este en 1 y RC1 este presionada
 
-        while(tec != '!'){                // Espera a que se presione la tecla ok para poder continuar
+            piezasContadas++;                    // Suma una pieza
 
-            tec = LeerTeclado();          // Lectura del teclado
-            RevisarTeclaESP();           // Revisa si se han presionado las teclas con funciones especiales
+            DireccionaLCD(10);                   // Se cambia solo la posición en la DDRAM que muestra el conteo
+            printf("%d", piezasContadas);        // Imprime las piezas contadas
+            
+            DireccionaLCD(26);                                 // Posicionamiento del cursor en la segunda línea en la posición que muestra las piezas faltantes de la DDRAM
+            printf("%d", totalPiezas - piezasContadas);        // Imprime las piezas faltantes
+        
+            LATD = (LATD & 0xF0) | (piezasContadas % 10);      // Actualiza solo RD0–RD3 con el conteo, preservando RD4–RD7
 
-            LATB = 0 ;                                              // Se limpia la entrada para poder seguir obteniendo entradas del teclado  
-
-            while(RB0 == 1 || RB1 == 1 || RB2 == 1 || RB3 == 1);    // Antirrebote
-                __delay_ms(150);
-            ;
+            while(RC1 == 1) ;                    // Si se mantiene presionado a RC1, no hace nada
+            banderaConteo = 0;                   // Después de sumar una pieza se sale del while, esperando a que se presione nuevamente RC1
         }
+
+        SETUP_RGB(piezasContadas);               // Llamado de la función que determina el color del RGB
+
+        RevisarTeclaESP();                                    // Llamado de la función que revisa si se ha presionado la tecla de STOP o Backlight
+        PunteroTeclaESP(&piezasContadas,&totalPiezas);        // Llamado de la función que revisa si se ha presionado la tecla de RESTART o FIN
+
+         
+        if ((piezasContadas % 10 == 0) && (piezasContadas != ultimoBuzzer)) {
+            Buzzer();                                         // Suena una vez
+            ultimoBuzzer = piezasContadas;                    // Marca que ya sonó para ese múltiplo
+        }
+        
+        *inactividad = 0 ;
+
+        LATB = 0 ;                                            // Se limpia la entrada para poder seguir obteniendo entradas del teclado
+        
+        while(RB4 == 0 || RB5 == 0 || RB6 == 0 || RB7 == 0);  //Antirrebote
+            __delay_ms(150);
+    
     }
 
+    BorraLCD();                       // Tras acabar el conteo se limpia la pantalla
+    printf("OBJETIVO LOGRADO");       // Mensaje de logro del conteo
 
-    void SETUP_RGB(unsigned char piezasContadas){
-        unsigned char colores[6] = {0b101, 0b001, 0b011, 0b010, 0b110, 0b111};    // Arreglo que contiene la combinación  de colores según el conteo realizado
-        unsigned char idx;                                                        // Inicialización variable de índice de colores
+    while(tec != '!'){                // Espera a que se presione la tecla ok para poder continuar
+        
+        tec = LeerTeclado();          // Lectura del teclado
+        RevisarTeclaESP();            // Revisa si se han presionado las teclas con funciones especiales
 
-        if (numDigits(piezasContadas) == 1) {                                     // Condición que determina si se han contado de 0 a 9 piezas
-            idx = 0;                                                              // Se inicia con el primer color (magenta)  
-        }
+        LATB = 0 ;                                              // Se limpia la entrada para poder seguir obteniendo entradas del teclado  
 
-        else if (numDigits(piezasContadas) == 2) {                                // Condición que determina si se han contado de más de 9 piezas
-            idx = piezasContadas / 10;                                            // Se le asigna a idx el índice según la decena que se haya contado
-        }
-        LATE = colores[idx];                                                      // Se le asigna a LATE el valor de RGB según piezasContadas 
+        while(RB0 == 1 || RB1 == 1 || RB2 == 1 || RB3 == 1);    // Antirrebote
+            __delay_ms(150);
+    }
+    
+}
 
+
+void SETUP_RGB(unsigned char piezasContadas){
+    unsigned char colores[6] = {0b101, 0b001, 0b011, 0b010, 0b110, 0b111};    // Arreglo que contiene la combinación  de colores según el conteo realizado
+    unsigned char idx;                                                        // Inicialización variable de índice de colores
+    
+    if (numDigits(piezasContadas) == 1) {                                     // Condición que determina si se han contado de 0 a 9 piezas
+        idx = 0;                                                              // Se inicia con el primer color (magenta)  
     }
 
-    void Buzzer(void){
-        LATA2 = 1;
-        __delay_ms(500);
-        LATA2 = 0;  
+    else if (numDigits(piezasContadas) == 2) {                                // Condición que determina si se han contado de más de 9 piezas
+        idx = piezasContadas / 10;                                            // Se le asigna a idx el índice según la decena que se haya contado
     }
+    LATE = colores[idx];                                                      // Se le asigna a LATE el valor de RGB según piezasContadas 
+}
+
+void Buzzer(void){
+    LATA2 = 1;
+    __delay_ms(500);
+    LATA2 = 0;  
+}
 
 void PARADA(void){
     
@@ -452,9 +465,9 @@ void finConteo(unsigned char *piezasContadas, unsigned char *totalPiezas){    //
     
     SETUP_RGB(*totalPiezas);
     
-    LATD = (LATD & 0xF0) | (*totalPiezas % 10);    // Se le asigna el valor al 7Seg como si se hubiera finalizado el conteo
+    LATD = (LATD & 0xF0) | (*totalPiezas % 10);     // Se le asigna el valor al 7Seg como si se hubiera finalizado el conteo
             
-    *piezasContadas = *totalPiezas;      // Sale del primer while de la función startCount();
+    *piezasContadas = *totalPiezas;                 // Sale del primer while de la función startCount();
     
 }
 
@@ -558,5 +571,25 @@ void RetardoLCD(unsigned char a){
 	}
 }
 
+void OcultarCursor(void) {
+    RS = 0;              // Modo comando
+    EnviaDato(0x0C);     // Display ON, Cursor OFF, Blink OFF
+    HabilitaLCD();
+    RetardoLCD(4);
+}
+
+void MostrarCursor(void) {
+    RS = 0;              // Modo comando  
+    EnviaDato(0x0F);     // Display ON, Cursor ON, Blink ON
+    HabilitaLCD();
+    RetardoLCD(4);
+}
+
+void CursorSinParpadeo(void) {
+    RS = 0;              // Modo comando
+    EnviaDato(0x0E);     // Display ON, Cursor ON, Blink OFF  
+    HabilitaLCD();
+    RetardoLCD(4);
+}
 
 #endif	/* LIBLCDXC8_H */
